@@ -12,14 +12,14 @@
             <div class="score">
                 <h1>Jogador</h1>
                 <div class="life-bar">
-                    <div class="life" :style="{width}"></div>
+                    <div class="life" :style="{width: playerLife + '%'}"></div>
                 </div>
                 <div></div>
             </div>
             <div class="score">
                 <h1>Monstro</h1>
                 <div class="life-bar">
-                    <div class="life" :style="{width}"></div>
+                    <div class="life"  :style="{width: monsterLife + '%'}"></div>
                 </div>
                 <div></div>
             </div>
@@ -33,9 +33,9 @@
                 <button class="btn attack" @click="battle">Ataque</button>
                 <button class="btn especial-attack">Ataque Especial</button>
                 <button class="btn heal">Curar</button>
-                <button class="btn give-up" @click="giveUpGame">Desistir</button>
+                <button class="btn give-up" @click="game">Desistir</button>
             </template>
-            <button class="btn new-game" v-else @click="beginGame">Iniciar Jogo</button>
+            <button class="btn new-game" v-else @click="game">Iniciar Jogo</button>
         </div>
         <div class="panel logs">
             <ul>
