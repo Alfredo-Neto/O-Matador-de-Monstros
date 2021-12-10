@@ -12,14 +12,14 @@
             <div class="score">
                 <h1>Jogador</h1>
                 <div class="life-bar">
-                    <div class="life"></div>
+                    <div class="life" :style="{width}"></div>
                 </div>
                 <div></div>
             </div>
             <div class="score">
                 <h1>Monstro</h1>
                 <div class="life-bar">
-                    <div class="life"></div>
+                    <div class="life" :style="{width}"></div>
                 </div>
                 <div></div>
             </div>
@@ -30,10 +30,10 @@
         </div>
         <div class="panel buttons">
             <template v-if="initGame">
-                <button class="btn attack">Ataque</button>
+                <button class="btn attack" @click="battle">Ataque</button>
                 <button class="btn especial-attack">Ataque Especial</button>
                 <button class="btn heal">Curar</button>
-                <button class="btn give-up" @click="beginGame">Desistir</button>
+                <button class="btn give-up" @click="giveUpGame">Desistir</button>
             </template>
             <button class="btn new-game" v-else @click="beginGame">Iniciar Jogo</button>
         </div>
