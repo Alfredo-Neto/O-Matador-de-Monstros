@@ -14,7 +14,10 @@ new Vue({
         },
     },
     methods: {
-        game() {
+        giveUpGame(){
+            this.isRunning = this.isRunning ? false : true;
+        },
+        newGame() {
             this.isRunning = this.isRunning ? false : true;
             this.resetLife();
         },
@@ -27,18 +30,22 @@ new Vue({
         heal(){
             //makes monster take away a negative amount of life from the player,
             //thus, healing him.
-            this.monsterDamage = this.getRandomArbitrary(-10, -5);
+            this.monsterDamage = this.getRandomArbitrary(-15, -10);
+            this.hurt('playerLife', 'monsterDamage', false);
+
+            // even when healing, player must be attacked at the same time
+            this.monsterDamage = this.getRandomArbitrary(7, 12);
             this.hurt('playerLife', 'monsterDamage', false);
         },
-        hurt(prop, whichDamage, special){
+        hurt(whichLife, whichDamage, special){
             const plus = special ? 5 : 0;
             const hurt = this[whichDamage] + plus;
             // console.log(`Hurt: ${whichDamage} => `, hurt);
-            this[prop] -= hurt;
-            if (this[prop] < 0) {
-                this[prop] = 0;
-            } else if (this[prop] > 100) {
-                this[prop] = 100;
+            this[whichLife] -= hurt;
+            if (this[whichLife] < 0) {
+                this[whichLife] = 0;
+            } else if (this[whichLife] > 100) {
+                this[whichLife] = 100;
             }
         },
         getRandomArbitrary(min, max) {
