@@ -2,11 +2,13 @@ new Vue({
     el: '#app',
     data: {
         isRunning: false,
+        isHealing: false,
         playerLife: 100,
         monsterLife: 100,
         maxLife: 100,
         playerDamage: 0,
         monsterDamage: 0,
+        logs: [],
     },
     computed: {
         hasResult(){
@@ -16,6 +18,7 @@ new Vue({
     methods: {
         giveUpGame(){
             this.isRunning = this.isRunning ? false : true;
+            this.logs = [];
         },
         newGame() {
             this.isRunning = this.isRunning ? false : true;
@@ -24,23 +27,33 @@ new Vue({
         attack(special){
             this.playerDamage = this.getRandomArbitrary(5, 10);
             this.monsterDamage = this.getRandomArbitrary(7, 12);
-            this.hurt('monsterLife', 'playerDamage', special);
-            this.hurt('playerLife', 'monsterDamage', false);
+            if (this.monsterLife > 0) {
+                this.hurt('playerLife', 'monsterDamage', 'Monstro', 'Jogador', false);
+            }
+            this.hurt('monsterLife', 'playerDamage', 'Jogador', 'Monstro', special);
         },
         heal(){
-            //makes monster take away a negative amount of life from the player,
-            //thus, healing him.
-            this.monsterDamage = this.getRandomArbitrary(-15, -10);
-            this.hurt('playerLife', 'monsterDamage', false);
-
             // even when healing, player must be attacked at the same time
             this.monsterDamage = this.getRandomArbitrary(7, 12);
-            this.hurt('playerLife', 'monsterDamage', false);
+            this.hurt('playerLife', 'monsterDamage', 'Monstro', 'Jogador', false);
+
+           
+            this.isHealing = true;
+            // causes monster to take away a negative amount of life from the player,
+            // thus, healing him.
+            this.monsterDamage = this.getRandomArbitrary(-10, -5);
+            this.hurt('playerLife', 'monsterDamage', 'Monstro', 'Jogador', false);
+            this.isHealing = false;
         },
-        hurt(whichLife, whichDamage, special){
+        hurt(whichLife, whichDamage, attacking, attacked, special){
             const plus = special ? 5 : 0;
             const hurt = this[whichDamage] + plus;
             // console.log(`Hurt: ${whichDamage} => `, hurt);
+            if (this.isHealing) {
+                this.registerLogs(`${attacked} se curou com +${Math.abs(hurt)}`);
+            } else {
+                this.registerLogs(`${attacking} atingiu ${attacked} com ${hurt} de dano.`);
+            }
             this[whichLife] -= hurt;
             if (this[whichLife] < 0) {
                 this[whichLife] = 0;
@@ -55,7 +68,10 @@ new Vue({
         resetLife() {
             this.playerLife = this.maxLife;
             this.monsterLife = this.maxLife;
-        }
+        },
+        registerLogs(value){
+            this.logs.unshift(value);
+        },
     },
     watch: {
         hasResult(value){
