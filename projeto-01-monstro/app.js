@@ -24,10 +24,16 @@ new Vue({
             this.hurt('monsterLife', 'playerDamage', special);
             this.hurt('playerLife', 'monsterDamage', false);
         },
+        heal(){
+            //makes monster take away a negative amount of life from the player,
+            //thus, healing him.
+            this.monsterDamage = this.getRandomArbitrary(-10, -5);
+            this.hurt('playerLife', 'monsterDamage', false);
+        },
         hurt(prop, whichDamage, special){
             const plus = special ? 5 : 0;
             const hurt = this[whichDamage] + plus;
-            console.log(`Hurt: ${whichDamage} => `, hurt);
+            // console.log(`Hurt: ${whichDamage} => `, hurt);
             this[prop] -= hurt;
             this[prop] = this[prop] < 0 ? 0 : this[prop];
         },
