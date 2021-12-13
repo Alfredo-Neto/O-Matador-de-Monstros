@@ -4,9 +4,8 @@ new Vue({
         isRunning: false,
         playerLife: 100,
         monsterLife: 100,
-        playerDamage: 16,
-        monsterDamage: 15,
-        special: 50,
+        playerDamage: 0,
+        monsterDamage: 0,
         maxLife: 100,
     },
     computed: {
@@ -20,11 +19,15 @@ new Vue({
             this.resetLife();
         },
         attack(special){
-            this.hurt('playerLife', 'monsterDamage', false);
+            this.playerDamage = this.getRandomArbitrary(5, 10);
+            this.monsterDamage = this.getRandomArbitrary(10, 15);
             this.hurt('monsterLife', 'playerDamage', special);
+            this.hurt('playerLife', 'monsterDamage', false);
         },
         hurt(prop, whichDamage, special){
-            const hurt = special ? this.special : this[whichDamage];
+            const plus = special ? 5 : 0;
+            const hurt = this[whichDamage] + plus;
+            console.log(`Hurt: ${whichDamage} => `, hurt);
             this[prop] -= hurt;
             this[prop] = this[prop] < 0 ? 0 : this[prop];
             if (this[prop] == 0) {
@@ -32,7 +35,8 @@ new Vue({
             }
         },
         getRandomArbitrary(min, max) {
-            return Math.random() * (max - min) + min;
+            const attack = Math.random() * (max - min) + min;
+            return Math.round(attack);
         },
         resetLife() {
             this.playerLife = this.maxLife;
