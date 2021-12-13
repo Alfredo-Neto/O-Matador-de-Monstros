@@ -35,7 +35,11 @@ new Vue({
             const hurt = this[whichDamage] + plus;
             // console.log(`Hurt: ${whichDamage} => `, hurt);
             this[prop] -= hurt;
-            this[prop] = this[prop] < 0 ? 0 : this[prop];
+            if (this[prop] < 0) {
+                this[prop] = 0;
+            } else if (this[prop] > 100) {
+                this[prop] = 100;
+            }
         },
         getRandomArbitrary(min, max) {
             const attack = Math.random() * (max - min) + min;
