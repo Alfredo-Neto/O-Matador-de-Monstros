@@ -23,6 +23,7 @@ new Vue({
         newGame() {
             this.isRunning = this.isRunning ? false : true;
             this.resetLife();
+            this.logs = [];
         },
         attack(special){
             this.playerDamage = this.getRandomArbitrary(5, 10);
@@ -69,8 +70,8 @@ new Vue({
             this.playerLife = this.maxLife;
             this.monsterLife = this.maxLife;
         },
-        registerLogs(value){
-            this.logs.unshift(value);
+        registerLogs(logMessage){
+            this.logs.unshift(logMessage);
         },
     },
     watch: {
