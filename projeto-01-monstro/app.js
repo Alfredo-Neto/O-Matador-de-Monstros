@@ -52,8 +52,10 @@ new Vue({
             // console.log(`Hurt: ${whichDamage} => `, hurt);
             if (this.isHealing) {
                 this.registerLogs(`${attacked} se curou com +${Math.abs(hurt)}`);
-            } else {
+            } else if (!special){
                 this.registerLogs(`${attacking} atingiu ${attacked} com ${hurt} de dano.`);
+            } else {
+                this.registerLogs(`${attacking} atingiu ${attacked} com Ataque Especial, causando ${hurt} de dano.`);
             }
             this[whichLife] -= hurt;
             if (this[whichLife] < 0) {
