@@ -17,13 +17,11 @@ new Vue({
     },
     methods: {
         giveUpGame(){
-            this.isRunning = this.isRunning ? false : true;
-            this.logs = [];
+            this.toggleRunningAndClearingArray();
         },
         newGame() {
-            this.isRunning = this.isRunning ? false : true;
+            this.toggleRunningAndClearingArray();
             this.resetLife();
-            this.logs = [];
         },
         attack(special){
             this.playerDamage = this.getRandomArbitrary(5, 10);
@@ -74,6 +72,10 @@ new Vue({
         },
         registerLogs(logMessage){
             this.logs.unshift(logMessage);
+        },
+        toggleRunningAndClearingArray(){
+            this.isRunning = this.isRunning ? false : true;
+            this.logs = [];
         },
     },
     watch: {
