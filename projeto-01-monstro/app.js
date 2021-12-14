@@ -9,6 +9,7 @@ new Vue({
         playerDamage: 0,
         monsterDamage: 0,
         logs: [],
+        whichClass: '',
     },
     computed: {
         hasResult(){
@@ -49,11 +50,15 @@ new Vue({
             const hurt = this[whichDamage] + plus;
             // console.log(`Hurt: ${whichDamage} => `, hurt);
             if (this.isHealing) {
-                this.registerLogs(`${attacked} se curou com +${Math.abs(hurt)}`);
+                this.registerLogs(`${attacked} se curou com +${Math.abs(hurt)}`, 'heal');
             } else if (!special){
-                this.registerLogs(`${attacking} atingiu ${attacked} com ${hurt} de dano.`);
+                if (attacking == 'Jogador') {
+                    this.registerLogs(`${attacking} atingiu ${attacked} com ${hurt} de dano.`, 'player');
+                } else {
+                    this.registerLogs(`${attacking} atingiu ${attacked} com ${hurt} de dano.`, 'monster');
+                }
             } else {
-                this.registerLogs(`${attacking} atingiu ${attacked} com Ataque Especial, causando ${hurt} de dano.`);
+                this.registerLogs(`${attacking} atingiu ${attacked} com Ataque Especial, causando ${hurt} de dano.`, 'especial-attack');
             }
             this[whichLife] -= hurt;
             if (this[whichLife] < 0) {
@@ -70,8 +75,8 @@ new Vue({
             this.playerLife = this.maxLife;
             this.monsterLife = this.maxLife;
         },
-        registerLogs(logMessage){
-            this.logs.unshift(logMessage);
+        registerLogs(logMessage, whichClass){
+            this.logs.unshift({logMessage, whichClass});
         },
         toggleRunningAndClearingArray(){
             this.isRunning = this.isRunning ? false : true;
